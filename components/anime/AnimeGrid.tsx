@@ -9,14 +9,17 @@ interface AnimeGridProps {
   onToggleFavorite?: (slug: string) => void;
   favoriteLoadingSlug?: string | null;
   emptyMessage?: string;
+  priorityCount?: number;
 }
+
 
 export function AnimeGrid({
   items,
   isLoading,
   onToggleFavorite,
   favoriteLoadingSlug,
-  emptyMessage = "Heç bir anime tapılmadı.",
+   emptyMessage = "Heç bir anime tapılmadı.",
+  priorityCount = 0,
 }: AnimeGridProps) {
   if (isLoading) {
     return (
@@ -45,11 +48,12 @@ export function AnimeGrid({
           className="animate-fade-in-up"
           style={{ animationDelay: `${Math.min(index, 10) * 45}ms` }}
         >
-          <AnimeCard
-            anime={anime}
-            onToggleFavorite={onToggleFavorite}
-            isFavoriteLoading={favoriteLoadingSlug === anime.slug}
-          />
+         <AnimeCard
+        anime={anime}
+        onToggleFavorite={onToggleFavorite}
+        isFavoriteLoading={favoriteLoadingSlug === anime.slug}
+        priority={index < priorityCount}
+         />
         </div>
       ))}
     </div>

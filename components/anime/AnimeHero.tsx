@@ -81,6 +81,7 @@ export function AnimeHero() {
                   alt=""
                   aria-hidden="true"
                   fill
+                  priority
                   sizes="140px"
                   quality={85}
                   style={{ objectPosition: posterFocus(poster.slug) }}

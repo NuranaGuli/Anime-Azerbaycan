@@ -12,9 +12,10 @@ interface AnimeCardProps {
   anime: AnimeSummary;
   onToggleFavorite?: (slug: string) => void;
   isFavoriteLoading?: boolean;
+  priority?: boolean;
 }
 
-export function AnimeCard({ anime, onToggleFavorite, isFavoriteLoading }: AnimeCardProps) {
+export function AnimeCard({ anime, onToggleFavorite, isFavoriteLoading, priority = false }: AnimeCardProps) {
   return (
     <Link
       href={`/anime/${anime.slug}`}
@@ -26,6 +27,7 @@ export function AnimeCard({ anime, onToggleFavorite, isFavoriteLoading }: AnimeC
         fill
         sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 20vw"
         quality={90}
+        priority={priority}
         style={{ objectPosition: posterFocus(anime.slug) }}
         className="object-cover transition-transform duration-500 group-hover:scale-[1.06]"
       />
