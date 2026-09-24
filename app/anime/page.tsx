@@ -71,6 +71,7 @@ export default function AnimeCatalogPage() {
         <>
           <AnimeGrid
             items={data?.items ?? []}
+             priorityCount={4}
             isLoading={isLoading || (isFetching && !data)}
             onToggleFavorite={handleToggleFavorite}
             favoriteLoadingSlug={toggleFavorite.isPending ? (toggleFavorite.variables as string) : null}
