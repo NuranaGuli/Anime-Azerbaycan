@@ -1,17 +1,30 @@
 "use client";
 
+import { useEffect, useRef } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Send } from "lucide-react";
+import { Send, X } from "lucide-react";
 import { commentSchema, type CommentFormValues } from "@/lib/schemas/interactionSchemas";
 import { Button } from "@/components/ui/Button";
 
 interface CommentFormProps {
   onSubmit: (content: string) => void;
   isSubmitting?: boolean;
+  replyingToName?: string;
+  onCancelReply?: () => void;
+  autoFocus?: boolean;
+  compact?: boolean;
 }
 
-export function CommentForm({ onSubmit, isSubmitting }: CommentFormProps) {
+export function CommentForm({
+  onSubmit,
+  isSubmitting,
+  replyingToName,
+  onCancelReply,
+  autoFocus,
+  compact,
+}: CommentFormProps) {
+  const textareaRef = useRef<HTMLTextAreaElement | null>(null);
   const {
     register,
     handleSubmit,
@@ -21,6 +34,12 @@ export function CommentForm({ onSubmit, isSubmitting }: CommentFormProps) {
     resolver: zodResolver(commentSchema),
     defaultValues: { content: "" },
   });
+
+  const { ref: contentRef, ...contentField } = register("content");
+
+  useEffect(() => {
+    if (autoFocus) textareaRef.current?.focus();
+  }, [autoFocus]);
 
   const submit = (values: CommentFormValues) => {
     onSubmit(values.content);
@@ -32,11 +51,32 @@ export function CommentForm({ onSubmit, isSubmitting }: CommentFormProps) {
       <label htmlFor="comment-content" className="sr-only">
         Şərh yaz
       </label>
+      {replyingToName && (
+        <div className="flex items-center justify-between rounded-md bg-surface-hover px-3 py-1.5 text-xs text-text-secondary">
+          <span>
+            Cavab verilir: <span className="font-medium text-text-primary">{replyingToName}</span>
+          </span>
+          {onCancelReply && (
+            <button
+              type="button"
+              onClick={onCancelReply}
+              aria-label="Cavabı ləğv et"
+              className="rounded p-0.5 hover:bg-surface hover:text-text-primary"
+            >
+              <X className="h-3.5 w-3.5" />
+            </button>
+          )}
+        </div>
+      )}
       <textarea
         id="comment-content"
-        {...register("content")}
-        rows={3}
-        placeholder="Bu anime haqqında fikrini bölüş..."
+        {...contentField}
+        ref={(el) => {
+          contentRef(el);
+          textareaRef.current = el;
+        }}
+        rows={compact ? 2 : 3}
+        placeholder={replyingToName ? "Cavabını yaz..." : "Bu anime haqqında fikrini bölüş..."}
         aria-invalid={!!errors.content}
         className="w-full resize-none rounded-lg border border-border bg-surface px-3.5 py-3 text-sm text-text-primary placeholder:text-text-muted focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
       />
