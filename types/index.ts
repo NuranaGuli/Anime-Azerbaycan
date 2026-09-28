@@ -40,6 +40,8 @@ export interface Comment {
   content: string;
   createdAt: string;
   isOwn: boolean;
+  parentId: string | null;
+  replies: Comment[];
 }
 
 export interface User {
