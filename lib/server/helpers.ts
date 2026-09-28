@@ -68,7 +68,7 @@ export function toAnimeDetail(anime: DbAnime, userId: string | null): AnimeDetai
   };
 }
 
-export function toCommentDto(comment: { id: string; animeId: string; userId: string; content: string; createdAt: string }, currentUserId: string | null): Comment {
+export function toCommentDto(comment: { id: string; animeId: string; userId: string; content: string; createdAt: string; parentId: string | null }, currentUserId: string | null): Comment {
   const author = db.users.find((u) => u.id === comment.userId);
   return {
     id: comment.id,
@@ -79,6 +79,8 @@ export function toCommentDto(comment: { id: string; animeId: string; userId: str
     content: comment.content,
     createdAt: comment.createdAt,
     isOwn: currentUserId !== null && currentUserId === comment.userId,
+    parentId: comment.parentId,
+    replies: [],
   };
 }
 

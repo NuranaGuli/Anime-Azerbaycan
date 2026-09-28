@@ -56,6 +56,7 @@ export interface DbComment {
   userId: string;
   content: string;
   createdAt: string;
+  parentId: string | null;
 }
 
 function hashPassword(password: string) {
@@ -377,6 +378,7 @@ function createDb() {
       userId: "u1",
       content: "Naruto-nu izləməyə başlayanda bilmirdim bu qədər emosional olacaq, xüsusilə son fəsillər inanılmazdır.",
       createdAt: "2024-05-10T14:30:00.000Z",
+      parentId: null,
     },
     {
       id: "c2",
@@ -384,6 +386,7 @@ function createDb() {
       userId: "seed1",
       content: "Animasiya keyfiyyəti köhnə seriyalar üçün çox yaxşıdır, amma bəzi hissələr uzadılıb.",
       createdAt: "2024-05-11T09:15:00.000Z",
+      parentId: null,
     },
     {
       id: "c3",
@@ -391,6 +394,7 @@ function createDb() {
       userId: "u1",
       content: "Layt və L arasındakı zəka döyüşü animedə gördüyüm ən yaxşı psixoloji mübarizədir.",
       createdAt: "2024-06-02T20:00:00.000Z",
+      parentId: null,
     },
   ];
 
