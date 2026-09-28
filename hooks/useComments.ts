@@ -16,8 +16,8 @@ export function useComments(slug: string) {
 
 export function useCreateComment(slug: string) {
   const queryClient = useQueryClient();
-  return useMutation<Comment, ApiRequestError, string>({
-    mutationFn: (content) => commentService.create(slug, content),
+  return useMutation<Comment, ApiRequestError, { content: string; parentId?: string | null }>({
+    mutationFn: ({ content, parentId }) => commentService.create(slug, content, parentId),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["comments", slug] });
       queryClient.invalidateQueries({ queryKey: ["profile-stats"] });
