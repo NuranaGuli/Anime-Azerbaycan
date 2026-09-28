@@ -1,9 +1,12 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
-import { Compass, Sparkles } from "lucide-react";
+import { Compass, Sparkles, User } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { SakuraPetals } from "@/components/decor/SakuraPetals";
 import { posterFocus } from "@/lib/posterFocus";
+import { useAuthStore } from "@/store/authStore";
 
 const FLOATING_POSTERS = [
   { slug: "naruto", src: "/images/anime/naruto.jpg" },
@@ -12,6 +15,8 @@ const FLOATING_POSTERS = [
 ];
 
 export function AnimeHero() {
+  const { isAuthenticated, isInitializing } = useAuthStore();
+
   return (
     <section className="relative overflow-hidden border-b border-border bg-hero-glow">
       <SakuraPetals />
@@ -54,11 +59,21 @@ export function AnimeHero() {
                 Anime-ləri kəşf et
               </Button>
             </Link>
-            <Link href="/auth/register">
-              <Button size="lg" variant="outline">
-                Qeydiyyatdan keç
-              </Button>
-            </Link>
+            {!isInitializing && !isAuthenticated && (
+              <Link href="/auth/register">
+                <Button size="lg" variant="outline">
+                  Qeydiyyatdan keç
+                </Button>
+              </Link>
+            )}
+            {!isInitializing && isAuthenticated && (
+              <Link href="/profile">
+                <Button size="lg" variant="outline">
+                  <User className="h-5 w-5" />
+                  Profilim
+                </Button>
+              </Link>
+            )}
           </div>
         </div>
 
